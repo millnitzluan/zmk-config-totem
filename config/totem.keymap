@@ -32,73 +32,169 @@
 //
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/keys.h>
 
 / {
-    keymap {
-        compatible = "zmk,keymap";
+    /*
+     * TOTEM 38-key
+     *
+     * Binding order:
+     *   10 top + 10 home + 12 bottom + 6 thumbs = 38
+     *
+     * Base:
+     *   Q W E R T       Y U I O P
+     *   A S D F G       H J K L ;
+     *   CTRL Z X C V B  N M , . / BSPC
+     *          GUI LOWER SPACE | ENTER RAISE ALT
+     */
 
-        default_layer {
-            display-name = "Base";
-            bindings = <
-                &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P
-                &kp A &kp S &kp D &kp F &kp G &kp H &kp J &kp K &kp L &kp SEMI
-                &kp LCTRL &kp Z &kp X &kp C &kp V &kp B &kp N &kp M &kp COMMA &kp DOT &kp FSLH &kp BSPC
-                &kp LGUI &mo 1 &kp SPACE &kp RET &mo 2 &kp LALT
-            >;
+    macros {
+        /*
+         * macOS/browser previous tab:
+         * Cmd + Shift + [
+         */
+        previous_tab: previous_tab {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <40>;
+            tap-ms = <40>;
+            bindings = <&kp LG(LS(LBKT))>;
         };
 
-        lower_layer {
-            display-name = "Lower";
-            bindings = <
-                &kp C_MUTE &kp C_VOL_DN &kp LBKT &kp RBKT &kp C_VOL_UP &kp HOME &kp PG_DN &kp PG_UP &kp END &kp GRAVE
-                &kp ESC &kp LG(LS(LBKT)) &kp LG(LS(RBKT)) &kp LPAR &kp GREATER_THAN &kp LEFT &kp DOWN &kp UP &kp RIGHT &kp RET
-                &kp BSPC &kp DEL &kp LBRC &kp RBRC &kp PRINTSCREEN &kp UNDER &kp PLUS &kp EQUAL &kp QMARK &kp SQT &trans &trans
-                &kp LGUI &trans &kp SPACE &kp RET &trans &kp LALT
-            >;
-        };
-
-        raise_layer {
-            display-name = "Raise";
-            bindings = <
-                &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT &kp PLUS &kp N7 &kp N8 &kp N9 &kp N0
-                &kp CARET &kp SQT &kp DQT &kp GRAVE &kp AMPS &kp ASTRK &kp N4 &kp N5 &kp N6 &kp EQUAL
-                &kp FSLH &kp PIPE &kp BSLH &kp AT &kp EURO &kp PRCNT &kp N1 &kp N2 &kp N3 &kp TAB &trans &trans
-                &kp LGUI &trans &kp SPACE &kp RET &trans &kp LALT
-            >;
-        };
-
-        adjust_layer {
-            display-name = "Adjust";
-            bindings = <
-                &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &kp F7 &kp F8 &kp F9 &kp F10
-                &kp LC(LS(ESC)) &kp LC(LA(DEL)) &trans &kp LC(LALT) &trans &kp F4 &kp F5 &kp F6 &kp F11 &kp F12
-                &sys_reset &trans &trans &trans &trans &trans &kp F1 &kp F2 &kp F3 &kp F12 &trans &trans
-                &trans &trans &trans &trans &trans &trans
-            >;
+        /*
+         * macOS/browser next tab:
+         * Cmd + Shift + ]
+         */
+        next_tab: next_tab {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <40>;
+            tap-ms = <40>;
+            bindings = <&kp LG(LS(RBKT))>;
         };
     };
 
     combos {
         compatible = "zmk,combos";
 
-        tab_combo {
+        /* W + E = TAB */
+        combo_tab {
             timeout-ms = <50>;
             key-positions = <1 2>;
             bindings = <&kp TAB>;
         };
 
-        esc_combo {
-            timeout-ms = <50>;
-            key-positions = <11 12>;
-            bindings = <&kp ESC>;
-        };
-
-        shift_combo {
+        /* X + C = LEFT SHIFT */
+        combo_shift {
             timeout-ms = <50>;
             key-positions = <22 23>;
             bindings = <&kp LSHFT>;
         };
+
+        /* ; + / = apostrophe */
+        combo_apos {
+            timeout-ms = <50>;
+            key-positions = <19 30>;
+            bindings = <&kp APOS>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        base {
+            display-name = "Base";
+            bindings = <
+                /* Top */
+                &kp Q       &kp W       &kp E       &kp R       &kp T
+                &kp Y       &kp U       &kp I       &kp O       &kp P
+
+                /* Home */
+                &kp A       &kp S       &kp D       &kp F       &kp G
+                &kp H       &kp J       &kp K       &kp L       &kp SEMI
+
+                /* Bottom */
+                &kp LCTRL   &kp Z       &kp X       &kp C       &kp V       &kp B
+                &kp N       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp BSPC
+
+                /* Thumbs */
+                &kp LGUI    &mo 1       &kp SPACE
+                &kp RET     &mo 2       &kp RALT
+            >;
+        };
+
+        lower_layer {
+            display-name = "Lower";
+            bindings = <
+                /* Numbers */
+                &kp N1      &kp N2      &kp N3      &kp N4      &kp N5
+                &kp N6      &kp N7      &kp N8      &kp N9      &kp N0
+
+                /* ESC / macOS tabs / parentheses / arrows / ENTER */
+                &kp ESC     &previous_tab &kp ESC    &kp LPAR    &kp RPAR
+                &kp LEFT    &kp DOWN      &kp UP     &kp RIGHT   &kp RET
+
+                /* Editing / symbols */
+                &kp BSPC    &kp DEL       &kp LBRC   &kp RBRC    &kp PSCRN  &kp UNDER
+                &kp PLUS    &kp EQUAL     &kp QMARK  &kp SQT     &trans     &trans
+
+                /* Thumbs */
+                &kp LGUI    &trans        &kp SPACE
+                &kp RET     &trans        &kp RALT
+            >;
+        };
+
+        raise_layer {
+            display-name = "Raise";
+            bindings = <
+                /* ! @ # $ % ^ & * ( ) */
+                &kp EXCL    &kp AT       &kp HASH    &kp DLLR    &kp PRCNT
+                &kp CARET   &kp AMPS     &kp ASTRK   &kp LPAR    &kp RPAR
+
+                /* Programming symbols */
+                &kp MINUS   &kp SQT      &kp DQT      &kp GRAVE   &kp AMPS
+                &kp ASTRK   &kp EQUAL    &kp LBKT     &kp RBKT    &kp BSLH
+
+                /* More symbols + number pad */
+                &kp FSLH    &kp PIPE     &kp BSLH     &kp AT      &kp PRCNT  &kp TAB
+                &kp N1      &kp N2       &kp N3       &kp N4      &kp N5     &kp N6
+
+                /* Thumbs */
+                &kp LGUI    &trans       &kp SPACE
+                &kp RET     &trans       &kp RALT
+            >;
+        };
+
+        device {
+            display-name = "Device";
+            bindings = <
+                /* Brightness / Bluetooth */
+                &none       &kp C_BRI_DN  &kp C_BRI_UP  &none          &none
+                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4
+
+                /* Media */
+                &kp K_MUTE   &kp C_VOL_DN &kp C_VOL_UP &kp C_PLAY_PAUSE &none
+                &none        &none        &none        &none            &none
+
+                /* Unused / clear Bluetooth */
+                &none       &none       &none       &none       &none       &none
+                &none       &none       &none       &none       &none       &bt BT_CLR
+
+                /* Thumbs */
+                &none       &none       &none
+                &none       &none       &none
+            >;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        device {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
     };
 };
+
