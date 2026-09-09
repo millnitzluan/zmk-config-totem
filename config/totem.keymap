@@ -108,6 +108,11 @@
             bindings = <&kp RIGHT_SHIFT>;
             key-positions = <29 28>;
         };
+
+        jk_escape {
+            bindings = <&kp ESCAPE>;
+            key-positions = <16 17>;
+        };
     };
 
     keymap {
