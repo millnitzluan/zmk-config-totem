@@ -113,6 +113,16 @@
             bindings = <&kp ESCAPE>;
             key-positions = <16 17>;
         };
+
+        right_control {
+            bindings = <&kp RIGHT_CONTROL>;
+            key-positions = <26 27>;
+        };
+
+        right_tab {
+            bindings = <&kp TAB>;
+            key-positions = <5 6>;
+        };
     };
 
     keymap {
