@@ -153,7 +153,7 @@
             bindings = <
           &kp EXCL   &kp AT    &kp HASH  &kp DLLR   &kp PRCNT    &kp CARET     &kp AMPS     &kp ASTRK  &kp LPAR  &kp RPAR
           &kp MINUS  &kp SQT   &kp DQT   &kp GRAVE  &kp AMPS     &kp ASTRK     &kp EQUAL    &kp LBKT   &kp RBKT  &kp BSLH
-&kp FSLH  &kp PIPE   &kp BSLH  &kp AT    &kp PRCNT  &kp TAB      &kp KP_MINUS  &kp KP_PLUS  &kp N3     &kp N4    &kp N5    &kp N6
+&kp FSLH  &kp PIPE   &kp BSLH  &kp AT    &kp PRCNT  &kp TAB      &kp KP_MINUS  &kp KP_PLUS  &kp N3     &kp N4    &kp TILDE  &kp N6
                                &kp LGUI  &trans     &kp SPACE    &kp RET       &trans       &kp RALT
             >;
         };
